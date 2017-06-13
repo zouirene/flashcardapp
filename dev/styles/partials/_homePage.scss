@@ -1,0 +1,254 @@
+// /*// before user logs in - landing page*/
+.landing-page {
+    display: flex;
+    flex-flow: column wrap;
+    align-content: center;
+    justify-content: center;
+    border: 1px solid white;
+    height: 100vh;
+    align-items: center;
+
+    button{
+        background: transparent;
+        border: 2px solid white;
+        padding: 15px 0;
+        width: 200px;
+        text-transform: uppercase;
+        font-size: 22px;
+        font-weight: 400;
+        letter-spacing: 5px;
+        color: white;
+        margin-top: 20px;
+        span{
+            letter-spacing: 0;
+        }
+    }
+
+    h1{
+        letter-spacing: 25px;
+        font-size: 80px;
+        font-family: $logoFont;
+        font-weight: 400;
+        color: white;
+        span{
+            letter-spacing: 0
+        }
+
+    }
+
+    p{
+        margin: 0;
+        font-size: 20px;
+        color: white;
+        font-weight: 200;
+    }
+
+}
+
+.landing-page button:hover{
+    background: rgba(255,255,255,0.5);
+    border: 2px solid rgba(255,255,255,0.2);
+    color: darkslategrey;
+}
+
+// after user logs in - list of decks
+
+.log-out-button {
+    position: fixed;
+    top: 6vh;
+    right:6vh;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    font-weight: 100;
+    letter-spacing: 1px;
+    width: auto;
+    &:hover {
+        font-weight: 400;
+    }
+}
+
+.logged-in-home {
+    width: 75%;
+    margin: 40px auto;
+    position: relative;
+
+    p{
+        margin: 0;
+        color: white;
+    }
+
+    h1 {
+        margin: 0;
+        font-family: $logoFont;
+        font-weight: 300;
+        letter-spacing: 10px;
+        font-size: 35px;
+        color: white;
+    }
+}
+
+// deck grid
+.deck-grid {
+    max-width: 100%;
+    margin-top: 40px;
+    .deck-cell {
+        display: inline-block;
+        width: 23vw;
+        height: 16vw;
+        background: rgba(255,255,255,0.15);
+        border: 5px solid white;
+        margin-right: 3vw;
+        margin-bottom: 3vw;
+        color: white;
+        cursor: pointer;
+        box-shadow: 2px 2px 50px rgba(0,0,0,0.05);
+        transition: all 0.3s;
+        &:nth-child(3n) {
+            margin-right: 0;
+        }
+        .deck-content{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            h2 {
+                font-size: 30px;
+                font-weight: 300;
+                letter-spacing: 5px;
+                text-align: center;
+                width: 100%;
+                transition: all 0.3s;
+            }
+            button{
+                background: transparent;
+                border: none;
+                position: absolute;
+                bottom: 5px;
+                right: 5px;
+                color: white;
+                transition: all 0.3s;
+                opacity: 0.5;
+            }
+        }
+        // height:
+    }
+}
+
+.deck-cell:hover {
+    transform: translateY(-5px);
+    box-shadow: 2px 2px 50px rgba(0,0,0,0.15);
+    background: rgba(255,255,255,0.9);
+    .deck-content {
+        h2 {
+            color: lightslategrey;
+        }
+        button {
+            color: lightslategrey;
+            &:hover {
+                color: black;
+            }
+        }
+    }
+}
+
+// add deck
+
+.add-deck-button {
+    background: transparent;
+    border: 2px solid white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    position: relative;
+
+    img{
+        width: 60%;
+        height: 60%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%)
+    }
+}
+
+.add-btn-cell {
+    position: fixed;
+    top: 6vh;
+    left: 10vh;
+}
+
+.add-deck-background__darken {
+    background: rgba(0,0,0,0.7);
+    position: fixed;
+    top:0;
+    left: 0;
+    right:0;
+    bottom:0;
+    z-index: 999;
+}
+
+#deck-input {
+    width: 500px;
+    height: 250px;
+    background: white;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 2px 2px 50px rgba(0,0,0,0.2);
+    .input-cell {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-flow: column wrap;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        input.enter-deck-name {
+            border: none;
+            background: transparent;
+            width: 80%;
+            height: 50px;
+            border-bottom: 1px solid black;
+            text-align: center;
+            &::-webkit-input-placeholder {
+                color: black;
+                opacity: 0.3;
+            }
+            &[type=text]:focus {
+                outline: none;
+            }
+        }
+        input.create-btn {
+            border: none;
+            background: transparent;
+            text-transform: uppercase;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        button {
+            background: transparent;
+            border: none;
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            img {
+                width: 100%;
+            }
+        }
+
+    }
+}
+
+
+
+
+

@@ -1,0 +1,14 @@
+html {
+    background-image: linear-gradient(-20deg, #00cdac 0%, #8ddad5 100%);    background-repeat: no-repeat;
+    font-family: $primaryFont;
+    font-weight: 200;
+    min-height: 100vh;
+    letter-spacing: 2px;
+    // color: white
+    // cursor: pointer;
+}
+
+
+.hidden {
+    display: none;
+}
