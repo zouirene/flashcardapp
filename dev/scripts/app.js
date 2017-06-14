@@ -289,7 +289,7 @@ class DeckHome extends React.Component {
             // console.log(flatKeyList[flatKeyList.length-1])
             if (flatKeyList.length > 1) {
                 console.log('there is not a new deck');
-                let currentKey = flatKeyList[flatKeyList.length-2]
+                let currentKey = flatKeyList[flatKeyList.length-2];
                 this.setState({
                     currentKey: currentKey
                 })
@@ -366,7 +366,6 @@ class DeckHome extends React.Component {
             showFront: !this.state.showFront
         })
     }
-
     toggleAddCard() {
         this.setState({
             addingCard: !this.state.addingCard
@@ -404,8 +403,10 @@ class DeckHome extends React.Component {
         let deckHomeHeader = (
             <div className="deck-home-header">
                 <button className="home-btn" onClick={()=>this.props.setCurrentPage('home')}>HOME</button>
-                <p>Currently in:</p>
-                <h2>{this.props.deck.name}</h2>
+                <div className="deck-name-cell">
+                    <p>Currently in:</p>
+                    <h2>{this.props.deck.name}</h2>
+                </div>
                 {addCard}
             </div>
             )
