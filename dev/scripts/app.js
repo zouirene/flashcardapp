@@ -64,16 +64,25 @@ class App extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const userId = this.state.user.uid;
-        const userRef = firebase.database().ref(userId)
-        userRef.push({name: this.state.currentDeck})
+        let userId = this.state.user.uid;
+        let userRef = firebase.database().ref(userId)
+        userRef.push(
+            {
+                name: this.state.currentDeck,
+                cards: {
+                    sampleCard: {
+                        front: 'This is a sample card',
+                        back:'Try adding your own cards'
+                    }
+                }
+            })
             .then(()=> {
                 this.setState({
                     currentDeck: '',
                     addingDeck: !this.state.addingDeck
                 });
             })
-        userRef.push({cards:{}})
+        // userRef.push({cards:{front: 'Add a Card', back:'did you'}})
     }
     handleChange(e) {
         this.setState({
@@ -81,8 +90,8 @@ class App extends React.Component {
         });
     }
     removeDeck(key) {
-        const userId = this.state.user.uid;
-        const userRef = firebase.database().ref(`${userId}/${key}`);
+        let userId = this.state.user.uid;
+        let userRef = firebase.database().ref(`${userId}/${key}`);
         userRef.remove();
     }
     setCurrentPage(currentPage){
@@ -180,8 +189,6 @@ class App extends React.Component {
     }
     componentDidMount() {
         auth.onAuthStateChanged((user) => {
-            // to remember the user has logged in after refreshing the page
-            console.log(user);
             if (user) {
                 console.log('user is logged in')
                 this.setState({
@@ -210,7 +217,12 @@ class App extends React.Component {
                         word3: {
                             front: "hackeryou",
                             back: "Lorem ipsum dolor sit amet, excepturi molestias voluptatum iure sint numquam velit debitis nostrum dolorem earum ex!"
+                        },
+                        sampleCard: {
+                            front: "This is a sample card",
+                            back: "Add a new card!"
                         }
+
                     }
                 })
 
@@ -234,13 +246,22 @@ class DeckHome extends React.Component {
         this.state = {
             currentCard: '',
             currentBack:'',
-            // cards: []
+
+            // card states
+            currentKey: 'sampleCard',
+            showFront: true
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleBackChange = this.handleBackChange.bind(this);
-        this.removeCard = this.removeCard.bind(this)
+        // card binds
+        this.removeCard=this.removeCard.bind(this);
+        this.nextCard=this.nextCard.bind(this);
+        this.showCurrentBack=this.showCurrentBack.bind(this);
+        this.showCurrentFront=this.showCurrentFront.bind(this);
+        this.toggleCard=this.toggleCard.bind(this)
     }
+
 
     handleChange(e) {
         this.setState({
@@ -253,29 +274,109 @@ class DeckHome extends React.Component {
             currentBack: e.target.value
         });
     }
+    componentDidMount(){
+        let userId = this.props.currentUser;
+        let deckId = this.props.deckId;
+        let deckRef = firebase.database().ref(`${userId}/${deckId}/cards`);
+        deckRef.on('value', (snapshot) => {
+            // this.setState({
+            //     decks: snapshot.val(),
+            // });
+            let flatKeyList = [].concat.apply([],Object.keys(snapshot.val()));
+            // console.log(flatKeyList[flatKeyList.length-2]);
+            // console.log(flatKeyList[flatKeyList.length-1])
+            if (flatKeyList.length > 1) {
+                console.log('there is not a new deck');
+                let currentKey = flatKeyList[flatKeyList.length-2]
+                this.setState({
+                    currentKey: currentKey
+                })
+            } else {
+                this.setState({
+                    currentKey: 'sampleCard'
+                })
+            }
+        });
+        // let keyList = Object.keys(this.props.deck.cards);
+        // let flatKeyList = [].concat.apply([], keyList);
+        // let newKey = flatKeyList[flatKeyList.length-1];
+        // this.setState({
 
+        // })
+    }
     handleSubmit(e) {
         e.preventDefault();
-        const userId = this.props.currentUser;
-        const deckId = this.props.deckId;
+        let userId = this.props.currentUser;
+        let deckId = this.props.deckId;
         console.log(deckId);
-        const deckRef = firebase.database().ref(`${userId}/${deckId}/cards`);
+        let deckRef = firebase.database().ref(`${userId}/${deckId}/cards`);
         deckRef.push({
             front:this.state.currentCard,
             back:this.state.currentBack
         }).then(()=> {
+            let keyList = Object.keys(this.props.deck.cards);
+            let flatKeyList = [].concat.apply([], keyList);
+            let newKey = flatKeyList[flatKeyList.length-2];
             this.setState({
                 currentCard: '',
-                currentBack: ''
+                currentBack: '',
+                currentKey: newKey
+                // currentKey: currentKey
             });
         });
     }
+
+// card method starts here
+    // componentDidMount(){
+
+    //     const userId = this.props.currentUser;
+    //     const deckId = this.props.deckId;
+    //     console.log(deckId);
+    //     const deckRef = firebase.database().ref(`${userId}/${deckId}/cards`);
+    //     this.setState({
+    //         currentKey: currentKey
+    //     })
+    // }
     removeCard(key) {
-        const userId = this.props.currentUser;
-        const deckId = this.props.deckId;
+        let userId = this.props.currentUser;
+        let deckId = this.props.deckId;
         console.log(deckId);
-        const deckRef = firebase.database().ref(`${userId}/${deckId}/cards/${key}`);
-        deckRef.remove();
+        let cardRef = firebase.database().ref(`${userId}/${deckId}/cards/${key}`);
+        cardRef.remove();
+        this.setState({
+            showFront: true
+        })
+    }
+    nextCard(){
+        console.log('go to next card')
+    }
+    showCurrentFront(){
+        console.log('go to front of this card');
+        this.setState({
+            showFront: !this.state.showFront
+        })
+    }
+    showCurrentBack(){
+        console.log('go to back of this card');
+        this.setState({
+            showFront: !this.state.showFront
+        })
+    }
+    toggleCard(){
+        let keyList = Object.keys(this.props.deck.cards);
+        for (var i=keyList.length; i>0; i--) {
+            keyList.push((keyList.splice(Math.floor(Math.random()*i),1)))
+        }
+        // console.log(keyList);
+        let flatKeyList = [].concat.apply([], keyList);
+        let currentKey = flatKeyList[0];
+        console.log('sup')
+        console.log(currentKey);
+
+        this.setState({
+            currentKey: currentKey,
+            showFront: !this.state.showFront
+        })
     }
 
     render() {
@@ -291,27 +392,47 @@ class DeckHome extends React.Component {
                 </div>
             </div>
             )
+
+        // let remainingCards = this.props.deck.cards
+
         if (typeof this.props.deck.cards !== "undefined") {
 
-            console.log(this.props.deck);
+            let sideUp;
+
+            if (this.state.showFront === true) {
+                sideUp = (key)=>{
+                // console.log(key)
+                    return (
+                        <div className="front">
+                            <h2>{this.props.deck.cards[key].front}</h2>
+                            <button onClick={this.showCurrentBack}>show back</button>
+                        </div>
+                    )
+                }
+            } else {
+                sideUp = (key) => {
+                    return (
+                        <div className="back">
+                            <h2>{this.props.deck.cards[key].front}</h2>
+                            <h3>{this.props.deck.cards[key].back}</h3>
+                            <button onClick={this.toggleCard}>next card</button>
+                            <button onClick={this.showCurrentFront}>show front</button>
+                        </div>
+                    )
+                }
+            }
+
+
+            // console.log(this.props.deck);
             return(
                 <div>
                     {deckHomeHeader}
                     <div className="card-display-container">
-                        {Object.keys(this.props.deck.cards).map((key)=>{
-                                return(
-                                    <div key={key} className="card-cell">
-                                        <div className="front">
-                                            <h2>{this.props.deck.cards[key].front}</h2>
-                                        </div>
-                                        <div className="back hidden">
-                                            <h2>{this.props.deck.cards[key].front}</h2>
-                                            <h3>{this.props.deck.cards[key].back}</h3>
-                                        </div>
-                                        <button onClick={()=>{this.removeCard(key)}}>Remove this card</button>
-                                    </div>
-                                )
-                            })}
+                        <button onClick={this.toggleCard}>shuffle</button>
+                            <div key={this.state.currentKey} className="card-cell">
+                                {sideUp(this.state.currentKey)}
+                                <button onClick={()=>{this.removeCard(this.state.currentKey)}}>Remove this card</button>
+                            </div>
                     </div>
                 </div>
             )
@@ -325,16 +446,137 @@ class DeckHome extends React.Component {
     }
 }
 
+// // <Card cards={this.props.deck.cards} currentUser={this.props.currentUser} deckId={this.props.deckId}/>
 
-        // return(
-        // )
-                            // { if (typeOf this.props.deck.cards !== "undefined"||"null")
+// class Card extends React.Component {
+//     constructor(){
+//         super();
+//         this.state = {
+//             currentKey: 'sampleCard',
+//             showFront: true
+//         }
+//         this.removeCard=this.removeCard.bind(this);
+//         this.nextCard=this.nextCard.bind(this);
+//         this.showCurrentBack=this.showCurrentBack.bind(this);
+//         this.showCurrentFront=this.showCurrentFront.bind(this);
+//         this.toggleCard=this.toggleCard.bind(this)
+//     }
+//     removeCard(key) {
+//         const userId = this.props.currentUser;
+//         const deckId = this.props.deckId;
+//         console.log(deckId);
+//         const deckRef = firebase.database().ref(`${userId}/${deckId}/cards/${key}`);
+//         deckRef.remove();
+//     }
+//     nextCard(){
+//         console.log('go to next card')
+//     }
+//     showCurrentFront(){
+//         console.log('go to front of this card');
+//         this.setState({
+//             showFront: !this.state.showFront
+//         })
+//     }
+//     showCurrentBack(){
+//         console.log('go to back of this card');
+//         this.setState({
+//             showFront: !this.state.showFront
+//         })
+//     }
+//     toggleCard(){
+//         let keyList = Object.keys(this.props.cards);
+//         for (var i=keyList.length; i>0; i--) {
+//             keyList.push((keyList.splice(Math.floor(Math.random()*i),1)))
+//         }
+//         // console.log(keyList);
+//         let flatKeyList = [].concat.apply([], keyList);
+//         let currentKey = flatKeyList[0];
+//         console.log('sup')
+//         console.log(currentKey);
 
-                            // }
+//         this.setState({
+//             currentKey: currentKey,
+//             showFront: !this.state.showFront
+//         })
+//     }
+
+//     render(){
+//         let sideUp;
+//         console.log(this.props.cards[this.state.currentKey].front)
 
 
+//         if (this.state.showFront === true) {
+//             sideUp = (key)=>{
+//                 return (
+//                     <div className="front">
+//                         <h2>{this.props.cards[key].front}</h2>
+//                         <button onClick={this.showCurrentBack}>show back</button>
+//                     </div>
+//                 )
+//             }
+//         } else {
+//             sideUp = (key) => {
+//                 return (
+//                     <div className="back">
+//                         <h2>{this.props.cards[key].front}</h2>
+//                         <h3>{this.props.cards[key].back}</h3>
+//                         <button onClick={this.toggleCard}>next card</button>
+//                         <button onClick={this.showCurrentFront}>show front</button>
+//                     </div>
+//                 )
+//             }
+//         }
+//         return(
+//             <div className="card-display-container">
+//                 <button onClick={this.toggleCard}>shuffle</button>
+//                     <div key={this.state.currentKey} className="card-cell">
+//                         {sideUp(this.state.currentKey)}
+//                         <button onClick={()=>{this.removeCard(this.state.currentCard)}}>Remove this card</button>
+//                     </div>
+//             </div>
+//         )
+//     }
+    // render(){
+    //     let sideUp;
+    //     console.log(this.props.cards)
+    //     if (this.state.showFront === true) {
+    //         sideUp = (key)=>{
+    //             return(
+    //                 <div className="front">
+    //                     <h2>{this.props.cards[key].front}</h2>
+    //                     <button onClick={this.showCurrentBack}>show back</button>
+    //                 </div>
+    //             )
+    //         }
+    //     } else {
+    //         sideUp = (key)=>{
+    //             return(
+    //                 <div className="back">
+    //                     <h2>{this.props.cards[key].front}</h2>
+    //                     <h3>{this.props.cards[key].back}</h3>
+    //                     <button onClick={this.nextCard}>next card</button>
+    //                     <button onClick={this.showCurrentFront}>show front</button>
+    //                 </div>
+    //             )
+    //         }
+    //     }
+    //     return(
+    //         <div className="card-display-container">
+    //             <button onClick={this.shuffleCard}>shuffle</button>
+    //             {Object.keys(this.props.cards).map((key)=>{
+    //                 return(
+    //                     <div key={key} className="card-cell">
+    //                         {sideUp(key)}
+    //                         <button onClick={()=>{this.removeCard(key)}}>Remove this card</button>
+    //                     </div>
+    //                 )
+    //             })}
+    //         </div>
+    //     )
+    // }
 
-                            // this is for sample deck rendering
+// }
+
 
 
 

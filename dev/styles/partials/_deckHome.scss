@@ -16,13 +16,19 @@
     }
 }
 
+.card-display-container {
+    width: 700px;
+    height: 400px;
+    // overflow: hidden;
+    position: relative;
+}
 
 .card-cell {
     width: 700px;
     height: 400px;
     background: white;
     border: 4px solid black;
-    // position: relative;
+    position: relative;
     .front {
         width: 100%;
         height: 100%;
