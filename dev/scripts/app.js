@@ -246,6 +246,7 @@ class DeckHome extends React.Component {
         this.state = {
             currentCard: '',
             currentBack:'',
+            addingCard: false,
 
             // card states
             currentKey: 'sampleCard',
@@ -259,7 +260,8 @@ class DeckHome extends React.Component {
         this.nextCard=this.nextCard.bind(this);
         this.showCurrentBack=this.showCurrentBack.bind(this);
         this.showCurrentFront=this.showCurrentFront.bind(this);
-        this.toggleCard=this.toggleCard.bind(this)
+        this.toggleCard=this.toggleCard.bind(this);
+        this.toggleAddCard=this.toggleAddCard.bind(this)
     }
 
 
@@ -297,12 +299,7 @@ class DeckHome extends React.Component {
                 })
             }
         });
-        // let keyList = Object.keys(this.props.deck.cards);
-        // let flatKeyList = [].concat.apply([], keyList);
-        // let newKey = flatKeyList[flatKeyList.length-1];
-        // this.setState({
 
-        // })
     }
     handleSubmit(e) {
         e.preventDefault();
@@ -320,23 +317,14 @@ class DeckHome extends React.Component {
             this.setState({
                 currentCard: '',
                 currentBack: '',
-                currentKey: newKey
+                currentKey: newKey,
+                showFront: true,
+                addingCard: !this.state.addingCard
                 // currentKey: currentKey
             });
         });
     }
 
-// card method starts here
-    // componentDidMount(){
-
-    //     const userId = this.props.currentUser;
-    //     const deckId = this.props.deckId;
-    //     console.log(deckId);
-    //     const deckRef = firebase.database().ref(`${userId}/${deckId}/cards`);
-    //     this.setState({
-    //         currentKey: currentKey
-    //     })
-    // }
     removeCard(key) {
         let userId = this.props.currentUser;
         let deckId = this.props.deckId;
@@ -379,21 +367,51 @@ class DeckHome extends React.Component {
         })
     }
 
+    toggleAddCard() {
+        this.setState({
+            addingCard: !this.state.addingCard
+        })
+    }
+
     render() {
         // console.log(this.props.deck.cards);
+
+        let addCard;
+        if (this.state.addingCard) {
+            addCard = (
+                <div className="add-card-background__darken">
+                    <div className="add-card-cell">
+                        <h3>Create a new card</h3>
+                        <input className="add-card-front" type="text" value={this.state.currentCard} onChange={this.handleChange} placeholder="Front of card" />
+                        <textarea className="add-card-back" type="text" value={this.state.currentBack} onChange={this.handleBackChange} placeholder="Enter notes for the back of the card"></textarea>
+                        <div className="buttons">
+                            <input type="submit" value="Add" onClick={this.handleSubmit}/>
+                            <button onClick={this.toggleAddCard}>Discard</button>
+                        </div>
+                    </div>
+                </div>
+            )
+        } else {
+            addCard = (
+                <div className="add-card-button-cell">
+                    <button className="add-card-button"onClick={this.toggleAddCard}>
+                        <img src="../asset/add.png"/>
+                    </button>
+                </div>
+            )
+        }
+
         let deckHomeHeader = (
             <div className="deck-home-header">
-                <button onClick={()=>this.props.setCurrentPage('home')}>HOME</button>
+                <button className="home-btn" onClick={()=>this.props.setCurrentPage('home')}>HOME</button>
+                <p>Currently in:</p>
                 <h2>{this.props.deck.name}</h2>
-                <div className="add-card-cell">
-                    <input type="text" value={this.state.currentCard} onChange={this.handleChange} placeholder="Add a new card" />
-                    <input type="text" value={this.state.currentBack} onChange={this.handleBackChange} placeholder="Enter notes here" />
-                    <input type="submit" value="Add" onClick={this.handleSubmit}/>
-                </div>
+                {addCard}
             </div>
             )
 
         // let remainingCards = this.props.deck.cards
+
 
         if (typeof this.props.deck.cards !== "undefined") {
 
@@ -413,25 +431,25 @@ class DeckHome extends React.Component {
                 sideUp = (key) => {
                     return (
                         <div className="back">
-                            <h2>{this.props.deck.cards[key].front}</h2>
-                            <h3>{this.props.deck.cards[key].back}</h3>
-                            <button onClick={this.toggleCard}>next card</button>
-                            <button onClick={this.showCurrentFront}>show front</button>
+                            <h3>{this.props.deck.cards[key].front}</h3>
+                            <h4>{this.props.deck.cards[key].back}</h4>
+                            <div className="buttons">
+                                <button onClick={this.showCurrentFront}>show front</button>
+                                <button onClick={this.toggleCard}>next card</button>
+                            </div>
                         </div>
                     )
                 }
             }
 
 
-            // console.log(this.props.deck);
             return(
                 <div>
                     {deckHomeHeader}
                     <div className="card-display-container">
-                        <button onClick={this.toggleCard}>shuffle</button>
                             <div key={this.state.currentKey} className="card-cell">
                                 {sideUp(this.state.currentKey)}
-                                <button onClick={()=>{this.removeCard(this.state.currentKey)}}>Remove this card</button>
+                                <button className="remove-card-btn" onClick={()=>{this.removeCard(this.state.currentKey)}}>Remove this card</button>
                             </div>
                     </div>
                 </div>
@@ -445,139 +463,6 @@ class DeckHome extends React.Component {
         }
     }
 }
-
-// // <Card cards={this.props.deck.cards} currentUser={this.props.currentUser} deckId={this.props.deckId}/>
-
-// class Card extends React.Component {
-//     constructor(){
-//         super();
-//         this.state = {
-//             currentKey: 'sampleCard',
-//             showFront: true
-//         }
-//         this.removeCard=this.removeCard.bind(this);
-//         this.nextCard=this.nextCard.bind(this);
-//         this.showCurrentBack=this.showCurrentBack.bind(this);
-//         this.showCurrentFront=this.showCurrentFront.bind(this);
-//         this.toggleCard=this.toggleCard.bind(this)
-//     }
-//     removeCard(key) {
-//         const userId = this.props.currentUser;
-//         const deckId = this.props.deckId;
-//         console.log(deckId);
-//         const deckRef = firebase.database().ref(`${userId}/${deckId}/cards/${key}`);
-//         deckRef.remove();
-//     }
-//     nextCard(){
-//         console.log('go to next card')
-//     }
-//     showCurrentFront(){
-//         console.log('go to front of this card');
-//         this.setState({
-//             showFront: !this.state.showFront
-//         })
-//     }
-//     showCurrentBack(){
-//         console.log('go to back of this card');
-//         this.setState({
-//             showFront: !this.state.showFront
-//         })
-//     }
-//     toggleCard(){
-//         let keyList = Object.keys(this.props.cards);
-//         for (var i=keyList.length; i>0; i--) {
-//             keyList.push((keyList.splice(Math.floor(Math.random()*i),1)))
-//         }
-//         // console.log(keyList);
-//         let flatKeyList = [].concat.apply([], keyList);
-//         let currentKey = flatKeyList[0];
-//         console.log('sup')
-//         console.log(currentKey);
-
-//         this.setState({
-//             currentKey: currentKey,
-//             showFront: !this.state.showFront
-//         })
-//     }
-
-//     render(){
-//         let sideUp;
-//         console.log(this.props.cards[this.state.currentKey].front)
-
-
-//         if (this.state.showFront === true) {
-//             sideUp = (key)=>{
-//                 return (
-//                     <div className="front">
-//                         <h2>{this.props.cards[key].front}</h2>
-//                         <button onClick={this.showCurrentBack}>show back</button>
-//                     </div>
-//                 )
-//             }
-//         } else {
-//             sideUp = (key) => {
-//                 return (
-//                     <div className="back">
-//                         <h2>{this.props.cards[key].front}</h2>
-//                         <h3>{this.props.cards[key].back}</h3>
-//                         <button onClick={this.toggleCard}>next card</button>
-//                         <button onClick={this.showCurrentFront}>show front</button>
-//                     </div>
-//                 )
-//             }
-//         }
-//         return(
-//             <div className="card-display-container">
-//                 <button onClick={this.toggleCard}>shuffle</button>
-//                     <div key={this.state.currentKey} className="card-cell">
-//                         {sideUp(this.state.currentKey)}
-//                         <button onClick={()=>{this.removeCard(this.state.currentCard)}}>Remove this card</button>
-//                     </div>
-//             </div>
-//         )
-//     }
-    // render(){
-    //     let sideUp;
-    //     console.log(this.props.cards)
-    //     if (this.state.showFront === true) {
-    //         sideUp = (key)=>{
-    //             return(
-    //                 <div className="front">
-    //                     <h2>{this.props.cards[key].front}</h2>
-    //                     <button onClick={this.showCurrentBack}>show back</button>
-    //                 </div>
-    //             )
-    //         }
-    //     } else {
-    //         sideUp = (key)=>{
-    //             return(
-    //                 <div className="back">
-    //                     <h2>{this.props.cards[key].front}</h2>
-    //                     <h3>{this.props.cards[key].back}</h3>
-    //                     <button onClick={this.nextCard}>next card</button>
-    //                     <button onClick={this.showCurrentFront}>show front</button>
-    //                 </div>
-    //             )
-    //         }
-    //     }
-    //     return(
-    //         <div className="card-display-container">
-    //             <button onClick={this.shuffleCard}>shuffle</button>
-    //             {Object.keys(this.props.cards).map((key)=>{
-    //                 return(
-    //                     <div key={key} className="card-cell">
-    //                         {sideUp(key)}
-    //                         <button onClick={()=>{this.removeCard(key)}}>Remove this card</button>
-    //                     </div>
-    //                 )
-    //             })}
-    //         </div>
-    //     )
-    // }
-
-// }
-
-
 
 
 
