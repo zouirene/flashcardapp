@@ -5,6 +5,8 @@ import {
     NavLink as Link,
     Route } from 'react-router-dom';
 
+import Particles from 'react-particles-js';
+
 // 1. set up firebase data base
 
 var config = {
@@ -141,6 +143,63 @@ class App extends React.Component {
                 }
                 showHome = (
                         <div className="logged-in-home">
+                            <Particles
+                                params={{
+                                    particles: {
+                                        number: {
+                                            value: 50
+                                        },
+                                        size: {
+                                          value: 4,
+                                          random: true,
+                                          anim: {
+                                            enable: false,
+                                            speed: 40,
+                                            size_min: 0.1,
+                                            sync: false
+                                          }
+                                        },
+                                        opacity: {
+                                          value: 0.2,
+                                          random: false,
+                                          anim: {
+                                            enable: false,
+                                            speed: 1,
+                                            opacity_min: 0.1,
+                                            sync: false
+                                          }
+                                        },
+                                        move: {
+                                          enable: true,
+                                          speed: 2,
+                                          direction: "none",
+                                          random: false,
+                                          straight: false,
+                                          out_mode: "out",
+                                          bounce: false,
+                                          attract: {
+                                            enable: false,
+                                            rotateX: 600,
+                                            rotateY: 1200
+                                          }
+                                        },
+                                        line_linked: {
+                                            shadow: {
+                                                enable: false,
+                                                color: "#3CA9D1",
+                                                blur: 5
+                                            }
+                                        }
+                                    }
+                                }}
+                                style={{
+                                    position: "fixed",
+                                    top: 0,
+                                    left: 0,
+                                    width: "100%",
+                                    height: "100%"
+                                }}
+                            />
                             <p>{this.state.user.displayName}'s</p>
                             <h1>Mind Palace</h1>
                             <button className="log-out-button" onClick={this.logout}>Log Out</button>
@@ -164,6 +223,63 @@ class App extends React.Component {
             } else {
                 showHome = (
                     <div className="landing-page">
+                        <Particles
+                        params={{
+                            particles: {
+                                number: {
+                                    value: 90
+                                },
+                                size: {
+                                  value: 3,
+                                  random: true,
+                                  anim: {
+                                    enable: false,
+                                    speed: 40,
+                                    size_min: 0.1,
+                                    sync: false
+                                  }
+                                },
+                                opacity: {
+                                  value: 0.3,
+                                  random: false,
+                                  anim: {
+                                    enable: false,
+                                    speed: 1,
+                                    opacity_min: 0.1,
+                                    sync: false
+                                  }
+                                },
+                                move: {
+                                  enable: true,
+                                  speed: 3,
+                                  direction: "none",
+                                  random: false,
+                                  straight: false,
+                                  out_mode: "out",
+                                  bounce: false,
+                                  attract: {
+                                    enable: false,
+                                    rotateX: 600,
+                                    rotateY: 1200
+                                  }
+                                },
+                                line_linked: {
+                                    shadow: {
+                                        enable: false,
+                                        color: "#3CA9D1",
+                                        blur: 5
+                                    }
+                                }
+                            }
+                        }}
+                        style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            width: "1440px",
+                            height: "1440px"
+                        }}
+                    />
                         <p>Create flashcards and store them in your own</p>
                         <div className="logo">
                             <img src="../../asset/logo.png" alt=""/>
@@ -175,6 +291,7 @@ class App extends React.Component {
           }
           return (
             <main>
+
                 {showHome}
             </main>
           )
@@ -407,6 +524,7 @@ class DeckHome extends React.Component {
 
         let deckHomeHeader = (
             <div className="deck-home-header">
+
                 <button className="home-btn" onClick={()=>this.props.setCurrentPage('home')}>HOME</button>
                 <div className="deck-name-cell">
                     <p>Currently in:</p>
@@ -451,6 +569,63 @@ class DeckHome extends React.Component {
 
             return(
                 <div>
+                <Particles
+                    params={{
+                        particles: {
+                            number: {
+                                value: 60
+                            },
+                            size: {
+                              value: 3,
+                              random: true,
+                              anim: {
+                                enable: false,
+                                speed: 40,
+                                size_min: 0.1,
+                                sync: false
+                              }
+                            },
+                            opacity: {
+                              value: 0.1,
+                              random: false,
+                              anim: {
+                                enable: false,
+                                speed: 1,
+                                opacity_min: 0.1,
+                                sync: false
+                              }
+                            },
+                            move: {
+                              enable: true,
+                              speed: 1,
+                              direction: "none",
+                              random: false,
+                              straight: false,
+                              out_mode: "out",
+                              bounce: false,
+                              attract: {
+                                enable: false,
+                                rotateX: 600,
+                                rotateY: 1200
+                              }
+                            },
+                            line_linked: {
+                                shadow: {
+                                    enable: false,
+                                    color: "#3CA9D1",
+                                    blur: 5
+                                }
+                            }
+                        }
+                    }}
+                    style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%"
+                    }}
+                />
                     {deckHomeHeader}
                     <div className="card-display-container">
                             <div key={this.state.currentKey} className="card-cell">
@@ -472,7 +647,21 @@ class DeckHome extends React.Component {
 
 
 
-
+// static particles param
+// move: {
+//   enable: false,
+//   speed: 6,
+//   direction: "none",
+//   random: false,
+//   straight: false,
+//   out_mode: "out",
+//   bounce: false,
+//   attract: {
+//     enable: false,
+//     rotateX: 600,
+//     rotateY: 1200
+//   }
+// }
 
 ReactDOM.render(<App />, document.getElementById('app'));
 

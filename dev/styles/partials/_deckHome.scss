@@ -89,8 +89,10 @@
         align-items: center;
         flex-flow: column wrap;
         h3{
-            color: darkslategrey;
+            color: $black;
             margin: 0;
+            font-family: $logoFont;
+            letter-spacing: 1px;
         }
         .add-card-front {
             margin-top: 30px;
@@ -116,13 +118,24 @@
         .buttons{
             display: flex;
             flex-flow: row wrap;
-            width: 45%;
+            width: 50%;
             justify-content: space-around;
             margin-top: 30px;
 
-            input, button {
-                background: transparent;
-                border: none;
+            input {
+                border: 2px solid $darkBlue;
+                color: $darkBlue;
+                background-color: transparent;
+                width: 120px;
+                padding: 10px 10px;
+                margin: 10px;
+            }
+            button {
+                background-color: $darkBlue;
+                color: white;
+                width: 120px;
+                padding: 10px 10px;
+                margin: 10px;
             }
         }
     }
