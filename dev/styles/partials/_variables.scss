@@ -1,9 +1,26 @@
-// color
+@font-face {
+    font-family: 'f37_bella';
+    src: url('f37bella-regular-webfont.eot');
+    src: url('f37bella-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('f37bella-regular-webfont.woff2') format('woff2'),
+         url('f37bella-regular-webfont.woff') format('woff'),
+         url('f37bella-regular-webfont.ttf') format('truetype'),
+         url('f37bella-regular-webfont.svg#f37_bellaregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+$darkBlue: #97B8E3;
+
+
+// $headingFont:'f37_bella', serif;
+// $bodyFont: 'Poppins', sans-serif;// color
 
 
 
 // Font family
 
-$primaryFont:'Montserrat', sans-serif;
-$logoFont: 'Cinzel', serif;
+$primaryFont:'Avenir', sans-serif;
+$logoFont: 'Josefin Sans', serif;
 $secondaryFont: 'Roboto', sans-serif;

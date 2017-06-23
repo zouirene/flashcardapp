@@ -142,7 +142,7 @@ class App extends React.Component {
                 showHome = (
                         <div className="logged-in-home">
                             <p>{this.state.user.displayName}'s</p>
-                            <h1>mindpalace</h1>
+                            <h1>Mind Palace</h1>
                             <button className="log-out-button" onClick={this.logout}>Log Out</button>
                             {addDeck}
                             <div className="deck-grid">
@@ -165,7 +165,10 @@ class App extends React.Component {
                 showHome = (
                     <div className="landing-page">
                         <p>Create flashcards and store them in your own</p>
-                        <h1 className="logo">mindpalac<span>e</span></h1>
+                        <div className="logo">
+                            <img src="../../asset/logo.png" alt=""/>
+                            <h1 className="logo-type">Mind Palac<span>e</span></h1>
+                        </div>
                         <button onClick={this.login}>Log I<span>n</span></button>
                     </div>
                 )
@@ -180,7 +183,7 @@ class App extends React.Component {
                 <main>
                     <div className="deck-home-wrapper">
                         <p>{this.state.user.displayName}'s</p>
-                        <h1>mindpalace</h1>
+                        <h1>Mind Palace</h1>
                         <DeckHome setCurrentPage={this.setCurrentPage} deck={this.state.decks[this.state.currentDeckId]} deckId={this.state.currentDeckId} currentUser={this.state.user.uid}/>
                     </div>
                 </main>
@@ -329,8 +332,10 @@ class DeckHome extends React.Component {
         let userId = this.props.currentUser;
         let deckId = this.props.deckId;
         console.log(deckId);
-        let cardRef = firebase.database().ref(`${userId}/${deckId}/cards/${key}`);
-        cardRef.remove();
+        if (key !== "sampleCard") {
+            let cardRef = firebase.database().ref(`${userId}/${deckId}/cards/${key}`);
+            cardRef.remove();
+        }
         this.setState({
             showFront: true
         })
@@ -424,7 +429,7 @@ class DeckHome extends React.Component {
                     return (
                         <div className="front">
                             <h2>{this.props.deck.cards[key].front}</h2>
-                            <button onClick={this.showCurrentBack}>show back</button>
+                            <button className="show-back-btn" onClick={this.showCurrentBack}>see meaning</button>
                         </div>
                     )
                 }
@@ -435,8 +440,8 @@ class DeckHome extends React.Component {
                             <h3>{this.props.deck.cards[key].front}</h3>
                             <h4>{this.props.deck.cards[key].back}</h4>
                             <div className="buttons">
-                                <button onClick={this.showCurrentFront}>show front</button>
-                                <button onClick={this.toggleCard}>next card</button>
+                                <button className="show-front-btn" onClick={this.showCurrentFront}>show front</button>
+                                <button className="next-card-btn" onClick={this.toggleCard}>next card</button>
                             </div>
                         </div>
                     )

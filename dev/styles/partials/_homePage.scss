@@ -7,33 +7,59 @@
     border: 1px solid white;
     height: 100vh;
     align-items: center;
-
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+    .logo {
+        // display: none;
+        position: relative;
+        margin-bottom: 80px;
+        .logo-type{
+            display: inline-block;
+            letter-spacing: 5px;
+            font-size: 90px;
+            vertical-align: middle;
+            font-family: $logoFont;
+            font-weight: 400;
+            color: white;
+            position: relative;
+            text-transform: uppercase;
+            // border: 1px solid red;
+            padding: 0;
+            transform: translateY(15px);
+            margin-left: 30px;
+            span{
+                letter-spacing: 0
+            }
+        }
+        // overflow: hidden;
+        img {
+            width: 130px;
+            vertical-align: middle;
+            height: auto;
+            // border: 1px solid red;
+            display: inline-block;
+        }
+    }
     button{
+        position: absolute;
         background: transparent;
-        border: 2px solid white;
+        border: 4px solid white;
         padding: 20px 0;
         width: 200px;
         text-transform: uppercase;
         font-size: 22px;
         font-weight: 300;
         letter-spacing: 2px;
+        bottom: 170px;
+        left: 50%;
+        transform: translateX(-50%);
         color: white;
         margin-top: 20px;
+        transition: all 0.2s ease-in-out;
         span{
             letter-spacing: 0;
         }
-    }
-
-    h1{
-        letter-spacing: 25px;
-        font-size: 80px;
-        font-family: $logoFont;
-        font-weight: 400;
-        color: white;
-        span{
-            letter-spacing: 0
-        }
-
     }
 
     p{
@@ -41,14 +67,37 @@
         font-size: 20px;
         color: white;
         font-weight: 200;
+        transform: translate(17px, 20px)
     }
 
 }
 
+.logo:after {
+    position: absolute;
+    content: '';
+    width: 70vw;
+    height: 3px;
+    background-color: rgba(255,255,255,1);
+    bottom: 69px;
+    right: -69vw;
+}
+
+.logo:before {
+    position: absolute;
+    content: '';
+    width: 50vw;
+    height: 3px;
+    background-color: rgba(255,255,255,1);
+    bottom: 68.5px;
+    left: -49.8vw;
+}
+
+
 .landing-page button:hover{
-    background: rgba(255,255,255,0.5);
-    border: 2px solid rgba(255,255,255,0.2);
-    color: darkslategrey;
+    background: rgba(255,255,255,1);
+    // border: 2px solid rgba(255,255,255,0.5);
+    color: $darkBlue;
+
 }
 
 // after user logs in - list of decks
@@ -56,11 +105,11 @@
 .log-out-button {
     position: fixed;
     top: 37px;
-    right:12.5vw;
+    right:12vw;
     background: transparent;
     border: none;
     color: white;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 100;
     letter-spacing: 1px;
     width: auto;
@@ -74,7 +123,7 @@
     margin: 40px auto;
     position: relative;
 
-    p{
+    p {
         margin: 0;
         color: white;
     }
@@ -83,10 +132,11 @@
         margin: 10px 0 0 0;
         font-family: $logoFont;
         font-weight: 300;
-        letter-spacing: 10px;
+        letter-spacing: 2px;
         font-size: 35px;
         color: white;
         width: 100%;
+        // text-transform: uppercase;
         border-bottom: 0.2px solid rgba(255,255,255,0.4);
         padding-bottom: 15px;
     }
@@ -95,22 +145,23 @@
 // deck grid
 .deck-grid {
     max-width: 100%;
-    margin-top: 40px;
+    margin: 40px auto;
+    // display: flex;
+    // flex-flow: row wrap;
+    // justify-content: flex-start;
+
     .deck-cell {
         display: inline-block;
-        width: 23vw;
-        height: 16vw;
+        width: 320px;
+        height: 220px;
         background: rgba(255,255,255,0.15);
         border: 5px solid white;
-        margin-right: 3vw;
-        margin-bottom: 3vw;
+        margin: 20px 20px;
         color: white;
         cursor: pointer;
         box-shadow: 2px 2px 50px rgba(0,0,0,0.05);
         transition: all 0.3s;
-        &:nth-child(3n) {
-            margin-right: 0;
-        }
+
         .deck-content{
             width: 100%;
             height: 100%;
@@ -120,10 +171,10 @@
             align-items: center;
             position: relative;
             h2 {
-                font-size: 30px;
+                font-size: 25px;
                 font-weight: 300;
-                letter-spacing: 5px;
                 text-align: center;
+                text-transform: uppercase;
                 width: 100%;
                 transition: all 0.3s;
             }
@@ -148,7 +199,7 @@
     background: rgba(255,255,255,0.9);
     .deck-content {
         h2 {
-            color: lightslategrey;
+            color: $darkBlue;
         }
         button {
             color: lightslategrey;
@@ -182,7 +233,7 @@
 .add-btn-cell {
     position: fixed;
     top: 6vh;
-    left: 10vh;
+    left: 5vw;
 }
 
 .add-deck-background__darken {
@@ -251,6 +302,100 @@
     }
 }
 
+
+@media (max-width: 1200px) {
+    .deck-grid {
+        max-width: 730px;
+    }
+}
+
+@media (max-width: 960px) {
+    .deck-grid {
+        max-width: 700px;
+        .deck-cell {
+            display: inline-block;
+            width: 260px;
+            height: 180px;
+            border: 4px solid white;
+            margin: 13px 13px;
+
+            .deck-content{
+                h2 {
+                    font-size: 23px;
+                }
+                button{
+                    background: transparent;
+                    border: none;
+                    position: absolute;
+                    bottom: 5px;
+                    right: 5px;
+                    color: white;
+                    transition: all 0.3s;
+                    opacity: 0.5;
+                    font-size: 14px;
+                }
+            }
+            // height:
+        }
+    }
+
+    .add-deck-button {
+        background: transparent;
+        width: 35px;
+        height: 35px;
+    }
+
+    .add-btn-cell {
+        top: 9vh;
+    }
+}
+
+@media (max-width: 760px) {
+    .deck-grid {
+        max-width: 320px;
+        margin-top: 0px;
+        .deck-cell {
+            display: inline-block;
+            width: 300px;
+            margin:20px 0;
+            height: 220px;
+            border: 3px solid white;
+            .deck-content{
+                h2 {
+                    font-size: 23px;
+                }
+                button{
+                    background: transparent;
+                    border: none;
+                    position: absolute;
+                    bottom: 5px;
+                    right: 5px;
+                    color: white;
+                    transition: all 0.3s;
+                    opacity: 0.5;
+                    font-size: 14px;
+                }
+            }
+            // height:
+        }
+    }
+
+    .add-deck-button {
+        background: transparent;
+        width: 30px;
+        height: 30px;
+    }
+
+    .add-btn-cell {
+        top: 9vh;
+        left: 2vw;
+    }
+
+    #deck-input {
+        width: 80vw;
+    }
+
+}
 
 
 
